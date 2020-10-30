@@ -22,7 +22,7 @@ const theme = {
         },
     },
     layout: {
-        maxWidth: 960,
+        maxWidth: 1200,
     }
 }
 

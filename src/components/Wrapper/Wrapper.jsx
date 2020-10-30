@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Container = styled.div`
+export const WrapperContainer = styled.div`
     width: 100%;
     margin-left: auto;
     margin-right: auto;
@@ -12,9 +12,9 @@ const Container = styled.div`
 
 const Wrapper = ({ children }) => {
     return (
-        <Container>
+        <WrapperContainer>
             {children}
-        </Container>
+        </WrapperContainer>
     );
 }
 

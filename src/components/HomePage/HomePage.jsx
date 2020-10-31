@@ -27,6 +27,7 @@ const InfoCard = styled.li`
     padding: ${({ theme }) => theme.spacing.xl}px;
     display: flex;
     flex-direction: column;
+    margin: 0;
 
     img {
         width: 100%;

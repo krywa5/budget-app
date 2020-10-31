@@ -1,6 +1,6 @@
 import { ThemeProvider } from 'styled-components';
 import GlobalStyle from 'index.css';
-import { LoadingIndicator, Navigation, Wrapper } from 'components';
+import { Button, LoadingIndicator, Navigation, Wrapper, HomePage } from 'components';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
@@ -29,8 +29,8 @@ function App() {
           ]}
           RightElement={(
             <div>
-              <button onClick={() => i18n.changeLanguage('pl')}>pl</button>
-              <button onClick={() => i18n.changeLanguage('en')}>en</button>
+              <Button variant="regular" onClick={() => i18n.changeLanguage('pl')}>pl</Button>
+              <Button variant="regular" onClick={() => i18n.changeLanguage('en')}>en</Button>
             </div>
           )}
         />
@@ -38,7 +38,7 @@ function App() {
         <Wrapper>
           <Switch>
             <Route path="/" exact>
-              {t('This is home page')}
+              <HomePage />
             </Route>
             <Route path="/budget">
               {t('This is budget page')}

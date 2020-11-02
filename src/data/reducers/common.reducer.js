@@ -1,15 +1,14 @@
 import {
-    LOADING_STATES,
-    BUDGET_GET,
-    BUDGET_GET_REQUEST,
-    BUDGET_GET_SUCCESS,
-    BUDGET_GET_FAILURE,
+    ALL_CATEGORIES_GET,
+    ALL_CATEGORIES_GET_REQUEST,
+    ALL_CATEGORIES_GET_SUCCESS,
+    ALL_CATEGORIES_GET_FAILURE,
+    LOADING_STATES
 } from 'data/constants';
 
 const initState = {
     loadingState: {},
-    budget: {},
-    budgetedCategories: [],
+    allCategories: [],
 };
 
 const budget = (state = initState, action) => {
@@ -18,7 +17,7 @@ const budget = (state = initState, action) => {
     const newLoadingState = { ...state.loadingState };
 
     switch (type) {
-        case BUDGET_GET_REQUEST:
+        case ALL_CATEGORIES_GET_REQUEST:
             return {
                 ...state,
                 loadingState: {
@@ -27,21 +26,21 @@ const budget = (state = initState, action) => {
                 }
             }
 
-        case BUDGET_GET_SUCCESS:
-            delete newLoadingState.BUDGET_GET_REQUEST;
+        case ALL_CATEGORIES_GET_SUCCESS:
+            delete newLoadingState.ALL_CATEGORIES_GET_REQUEST;
 
             return {
                 ...state,
-                budget: payload,
+                allCategories: payload,
                 loadingState: newLoadingState,
             };
 
-        case BUDGET_GET_FAILURE:
-            delete newLoadingState.BUDGET_GET_REQUEST;
+        case ALL_CATEGORIES_GET_FAILURE:
+            delete newLoadingState.ALL_CATEGORIES_GET_REQUEST;
 
             return {
                 ...state,
-                budget: {},
+                allCategories: [],
                 loadingState: newLoadingState,
             };
 

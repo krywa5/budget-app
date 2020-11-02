@@ -15,4 +15,9 @@ export const NavigationWrapper = styled(WrapperContainer)`
 
 export const List = styled.ul`
     display: flex;
+
+    li {
+        display: flex;
+        align-items: center;
+    }
 `;

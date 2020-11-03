@@ -11,7 +11,7 @@ import {
 } from 'data/constants';
 
 const initState = {
-    loadingState: {},
+    loadingState: null,
     budget: {},
     budgetedCategories: [],
 };

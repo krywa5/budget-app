@@ -6,11 +6,11 @@ import {
 } from 'data/constants';
 
 const initState = {
-    loadingState: {},
+    loadingState: null,
     allCategories: [],
 };
 
-const budget = (state = initState, action) => {
+const common = (state = initState, action) => {
     const { type, payload } = action;
 
     const newLoadingState = { ...state.loadingState };
@@ -48,4 +48,4 @@ const budget = (state = initState, action) => {
     }
 }
 
-export default budget;
+export default common;

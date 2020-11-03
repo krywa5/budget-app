@@ -64,7 +64,7 @@ const InfoCard = styled.li`
     }
 `;
 
-const HomePage = () => {
+const Home = () => {
     const { t } = useTranslation();
 
     return (
@@ -95,4 +95,4 @@ const HomePage = () => {
     );
 }
 
-export default HomePage;
+export default Home;

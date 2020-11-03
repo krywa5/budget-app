@@ -1,12 +1,13 @@
-import { applyMiddleware, compose, createStore } from 'redux';
+import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-// import thunkMiddleware from 'redux-thunk';
 
-// import monitorReducersEnhancer from './enhancers/monitorReducers';
 import rootReducer from './reducers';
+import promiseMiddleware from 'data/middlewares/promise';
 
 export default function configureStore(preloadedState) {
-    const middlewares = [];
+    const middlewares = [
+        promiseMiddleware,
+    ];
 
     const middlewareEnhancer = applyMiddleware(...middlewares);
 

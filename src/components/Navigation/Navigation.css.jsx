@@ -11,6 +11,7 @@ export const Container = styled.nav`
 export const NavigationWrapper = styled(WrapperContainer)`
     display: flex;
     justify-content: space-between;
+    margin-top: 0;
 `;
 
 export const List = styled.ul`

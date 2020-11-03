@@ -9,10 +9,7 @@ const Item = ({ item, onClickHandler, isActive }) => (
 )
 
 const ToggleableList = ({ items }) => {
-    const [selectedItem, setSelectedItem] = useState();
-    // const [isActive, setIsActive] = useState(false);
-
-    // const toggleActive = () => setIsActive(prevVal => !prevVal);
+    const [selectedItem, setSelectedItem] = useState(false);
 
     return (
         <>

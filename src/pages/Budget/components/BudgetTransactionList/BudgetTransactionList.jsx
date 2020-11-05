@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { connect } from 'react-redux';
 import { groupBy } from 'lodash';
 import { useTranslation } from 'react-i18next';
@@ -11,7 +11,7 @@ const BudgetTransactionList = ({ transactions, budgetedCategories, allCategories
     const { i18n } = useTranslation()
     const activeLanguage = i18n.language;
 
-    const filteredTransactionsBySelectedParentCategory = (() => {
+    const filteredTransactionsBySelectedParentCategory = useMemo(() => {
         if (typeof selectedParentCategoryId === 'undefined') {
             return transactions;
         }
@@ -38,14 +38,16 @@ const BudgetTransactionList = ({ transactions, budgetedCategories, allCategories
                     return false;
                 }
             })
-    })();
-
-    const groupedTransactions = groupBy(
-        filteredTransactionsBySelectedParentCategory,
-        transaction => new Date(transaction.date).getUTCDate()
+    },
+        [allCategories, budgetedCategories, selectedParentCategoryId, transactions]
     );
 
-    // console.log({ filteredTransactionsBySelectedParentCategory });
+    const groupedTransactions = useMemo(() => groupBy(
+        filteredTransactionsBySelectedParentCategory,
+        transaction => new Date(transaction.date).getUTCDate()
+    ),
+        [filteredTransactionsBySelectedParentCategory]
+    );
 
 
     return (

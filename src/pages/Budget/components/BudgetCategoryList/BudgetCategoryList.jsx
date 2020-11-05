@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useMemo, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { groupBy } from 'lodash';
 import { useTranslation } from 'react-i18next';
@@ -15,21 +15,27 @@ const BudgetCategoryList = ({ budgetedCategories, allCategories, budget, selectP
     const { t } = useTranslation();
     const handleClickParentCategoryRef = useRef(null);
 
-    const budgetedCategoriesByParent = groupBy(
+    const budgetedCategoriesByParent = useMemo(() => groupBy(
         budgetedCategories,
         item => allCategories.find(category => category.id === item.categoryId).parentCategory.name
+    ),
+        [budgetedCategories, allCategories]
     );
 
-    const handleClearParentCategorySelect = () => {
+    const handleClearParentCategorySelect = useCallback(() => {
         selectParentCategory();
         handleClickParentCategoryRef.current();
-    }
-    const handleSelectRestParentCategories = () => {
+    },
+        [selectParentCategory, handleClickParentCategoryRef]
+    );
+    const handleSelectRestParentCategories = useCallback(() => {
         selectParentCategory(null);
         handleClickParentCategoryRef.current();
-    }
+    },
+        [selectParentCategory, handleClickParentCategoryRef]
+    );
 
-    const listItem = Object.entries(budgetedCategoriesByParent).map(([parentName, categories]) => ({
+    const listItems = useMemo(() => Object.entries(budgetedCategoriesByParent).map(([parentName, categories]) => ({
         id: parentName,
         Trigger: ({ onClick }) => (
             <ParentCategory
@@ -52,33 +58,47 @@ const BudgetCategoryList = ({ budgetedCategories, allCategories, budget, selectP
                 transactions={budget.transactions}
             />)
         }
-
         ),
-    }));
+    })),
+        [allCategories, budget.transactions, budgetedCategoriesByParent, selectParentCategory]
+    );
 
-    const totalSpent = budget.transactions
-        .reduce((acc, transaction) => acc + transaction.amount, 0);
+    const totalSpent = useMemo(() => budget.transactions
+        .reduce((acc, transaction) => acc + transaction.amount, 0),
+        [budget.transactions]
+    );
 
-    const restToSpend = budget.totalAmount - totalSpent;
-    const amountTaken = budgetedCategories.reduce((acc, budgetedCategory) => {
+    const restToSpend = useMemo(() => budget.totalAmount - totalSpent,
+        [budget.totalAmount, totalSpent]
+    );
+
+    const amountTaken = useMemo(() => budgetedCategories.reduce((acc, budgetedCategory) => {
         const categoryTransactions = budget.transactions
             .filter(transaction => transaction.categoryId === budgetedCategory.id);
         const categoryExpenses = categoryTransactions
             .reduce((acc, transaction) => acc + transaction.amount, 0);
 
         return acc + Math.max(budgetedCategory.budget, categoryExpenses);
-    }, 0);
+    }, 0),
+        [budgetedCategories, budget.transactions]
+    );
 
-    const notBudgetedTransactions = budget.transactions
+    const notBudgetedTransactions = useMemo(() => budget.transactions
         .filter(transaction => {
             return !budgetedCategories
                 .find(budgetedCategory => budgetedCategory.id === transaction.categoryId)
-        });
+        }),
+        [budget.transactions, budgetedCategories]
+    );
 
-    const notBudgetedExpenses = notBudgetedTransactions
-        .reduce((acc, transaction) => acc + transaction.amount, 0);
+    const notBudgetedExpenses = useMemo(() => notBudgetedTransactions
+        .reduce((acc, transaction) => acc + transaction.amount, 0),
+        [notBudgetedTransactions]
+    );
 
-    const availableForRestCategories = budget.totalAmount - amountTaken - notBudgetedExpenses;
+    const availableForRestCategories = useMemo(() => budget.totalAmount - amountTaken - notBudgetedExpenses,
+        [budget.totalAmount, amountTaken, notBudgetedExpenses]
+    );
 
     return (
         <div>
@@ -94,7 +114,7 @@ const BudgetCategoryList = ({ budgetedCategories, allCategories, budget, selectP
                 />
             </div>
             <ToggleableList
-                items={listItem}
+                items={listItems}
                 clickRef={handleClickParentCategoryRef}
             />
             <div

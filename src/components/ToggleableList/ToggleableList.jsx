@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 const Item = ({ item, onClickHandler, isActive }) => (
@@ -8,8 +8,14 @@ const Item = ({ item, onClickHandler, isActive }) => (
     </div>
 )
 
-const ToggleableList = ({ items }) => {
+const ToggleableList = ({ items, clickRef }) => {
     const [selectedItem, setSelectedItem] = useState(false);
+
+    const hideElement = () => setSelectedItem(false);
+
+    useEffect(() => {
+        clickRef.current = hideElement;
+    }, [clickRef, setSelectedItem]);
 
     return (
         <>

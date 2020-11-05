@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { connect } from 'react-redux';
 import { groupBy } from 'lodash';
 import { useTranslation } from 'react-i18next';
@@ -9,21 +9,35 @@ import ParentCategory from './ParentCategory';
 import CategoryItem from './CategoryItem';
 import { ErrorParagraph } from 'components'; // TODO: apply ErrorParagraph if budget is not fetched
 
-const BudgetCategoryList = ({ budgetedCategories, allCategories, budget }) => {
+import { selectParentCategory } from 'data/actions/budget.actions';
 
+const BudgetCategoryList = ({ budgetedCategories, allCategories, budget, selectParentCategory }) => {
     const { t } = useTranslation();
+    const handleClickParentCategoryRef = useRef(null);
 
     const budgetedCategoriesByParent = groupBy(
         budgetedCategories,
         item => allCategories.find(category => category.id === item.categoryId).parentCategory.name
     );
 
+    const handleClearParentCategorySelect = () => {
+        selectParentCategory();
+        handleClickParentCategoryRef.current();
+    }
+    const handleSelectRestParentCategories = () => {
+        selectParentCategory(null);
+        handleClickParentCategoryRef.current();
+    }
+
     const listItem = Object.entries(budgetedCategoriesByParent).map(([parentName, categories]) => ({
         id: parentName,
         Trigger: ({ onClick }) => (
             <ParentCategory
                 name={parentName}
-                onClick={() => onClick(parentName)}
+                onClick={() => {
+                    onClick(parentName);
+                    selectParentCategory(parentName);
+                }}
                 categories={categories}
                 transactions={budget.transactions}
             />
@@ -76,10 +90,12 @@ const BudgetCategoryList = ({ budgetedCategories, allCategories, budget }) => {
                 <ParentCategory
                     name={budget.name}
                     amount={restToSpend}
+                    onClick={handleClearParentCategorySelect}
                 />
             </div>
             <ToggleableList
                 items={listItem}
+                clickRef={handleClickParentCategoryRef}
             />
             <div
                 css={`
@@ -89,6 +105,7 @@ const BudgetCategoryList = ({ budgetedCategories, allCategories, budget }) => {
                 <ParentCategory
                     name={t('Other categories')}
                     amount={availableForRestCategories}
+                    onClick={handleSelectRestParentCategories}
                 />
             </div>
 
@@ -102,4 +119,6 @@ export default connect(state => ({
     budgetedCategories: state.budget.budgetedCategories,
     allCategories: state.common.allCategories,
     budget: state.budget.budget,
-}))(BudgetCategoryList);
+}), {
+    selectParentCategory
+})(BudgetCategoryList);

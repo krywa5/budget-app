@@ -4,6 +4,8 @@ export const Grid = styled.div`
     display: flex;
 
     section {
+        position: relative;
+        
         &:nth-child(1) {
             flex: 4;
         }

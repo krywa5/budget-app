@@ -53,10 +53,10 @@ const BudgetTransactionList = ({ transactions, budgetedCategories, allCategories
     return (
         <List>
             {Object.entries(groupedTransactions).map(([key, transactions]) => (
-                <li>
+                <li key={key}>
                     <ul>
                         {transactions.map(transaction => (
-                            <ListItem>
+                            <ListItem key={transaction.description}>
                                 <div>{transaction.description}</div>
                                 <div>{formatCurrency(transaction.amount, activeLanguage)}</div>
                                 <div>{formatDate(transaction.date, activeLanguage)}</div>

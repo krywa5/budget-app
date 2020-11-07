@@ -27,7 +27,11 @@ export const fetchBudgetedCategories = id => {
     };
 }
 
-export const addTransaction = ({ budgetId, data }) => {
+export const addTransaction = ({ budgetId, data, translation }) => {
+    // prop translation to funkcja t z useTranslation()
+
+    const message = translation && typeof translation === 'function' ? translation("Transaction has been added!") : "Transaction has been added!";
+
     const promise = API.budget.addTransaction({
         budgetId,
         data
@@ -36,7 +40,7 @@ export const addTransaction = ({ budgetId, data }) => {
     return {
         type: BUDGET_TRANSACTION_ADD,
         promise,
-        successMessage: "Transaction has been added!",
+        successMessage: message,
     }
 }
 

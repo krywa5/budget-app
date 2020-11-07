@@ -21,7 +21,7 @@ const SingleTransactionData = ({ transactions, budgetName, allCategories }) => {
 
     return (
         <Root>
-            <h2>{t(description)}</h2>
+            <h2>{description}</h2>
             <p><span>{t('Transaction amount')}</span><span>{amountFormatted}</span></p>
             <p><span>{t('Budget name')}</span><span>{budgetName}</span></p>
             <p><span>{t('Category')}</span><span>{categoryName}</span></p>

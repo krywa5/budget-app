@@ -1,5 +1,3 @@
-// TODO: automatyczne pobieranie wersji językowej w utilsach, a nie w komponentach
-
 export const formatCurrency = (value, lang = 'en') => {
     const number = Number(value);
 

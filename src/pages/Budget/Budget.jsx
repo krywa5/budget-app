@@ -43,6 +43,7 @@ const Budget = ({
     addTransaction({
       budgetId: budget.id,
       data: values,
+      translation: t,
     })
       .then(() => history.goBack());
   };

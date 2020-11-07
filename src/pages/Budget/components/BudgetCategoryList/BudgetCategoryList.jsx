@@ -128,7 +128,6 @@ const BudgetCategoryList = ({ budgetedCategories, allCategories, budget, selectP
                     onClick={handleSelectRestParentCategories}
                 />
             </div>
-
         </div>
     );
 }

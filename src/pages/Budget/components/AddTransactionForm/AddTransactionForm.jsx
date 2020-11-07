@@ -60,9 +60,7 @@ const AddTransactionForm = ({ onSubmit = noop, categories, groupCategoriesBy }) 
                 <select {...input}>
                   {categoryItems}
                 </select>
-
-                {/* <input {...input} type="text" placeholder={t('Category')} />
-                {meta.error && meta.touched && <span role="alert">{meta.error}</span>} */}
+                {meta.error && meta.touched && <span role="alert">{meta.error}</span>}
               </div>
             )}
           </Field>

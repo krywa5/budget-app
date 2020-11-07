@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { formatCurrency, formatDate } from 'utils';
 
 import { List, ListItem } from './BudgetTransactionList.css';
+import { Link } from 'react-router-dom';
 
 const BudgetTransactionList = ({ transactions, budgetedCategories, allCategories, selectedParentCategoryId }) => {
     const { i18n } = useTranslation()
@@ -50,6 +51,8 @@ const BudgetTransactionList = ({ transactions, budgetedCategories, allCategories
     );
 
 
+
+
     return (
         <List>
             {Object.entries(groupedTransactions).map(([key, transactions]) => (
@@ -57,10 +60,12 @@ const BudgetTransactionList = ({ transactions, budgetedCategories, allCategories
                     <ul>
                         {transactions.map(transaction => (
                             <ListItem key={transaction.description}>
-                                <div>{transaction.description}</div>
-                                <div>{formatCurrency(transaction.amount, activeLanguage)}</div>
-                                <div>{formatDate(transaction.date, activeLanguage)}</div>
-                                <div>{(allCategories.find(category => category.id === transaction.categoryId) || {}).name}</div>
+                                <Link to={`/budget/transaction/${transaction.id}`}>
+                                    <div>{transaction.description}</div>
+                                    <div>{formatCurrency(transaction.amount, activeLanguage)}</div>
+                                    <div>{formatDate(transaction.date, activeLanguage)}</div>
+                                    <div>{(allCategories.find(category => category.id === transaction.categoryId) || {}).name}</div>
+                                </Link>
                             </ListItem>
                         ))}
                     </ul>

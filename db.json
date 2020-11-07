@@ -102,6 +102,11 @@
       "id": "1",
       "name": "April",
       "totalAmount": 2400
+    },
+    {
+      "id": "2",
+      "name": "Cośinnego",
+      "totalAmount": 2400
     }
   ],
   "transactions": [

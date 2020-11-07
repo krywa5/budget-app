@@ -13,6 +13,7 @@ import BudgetCategoryList from 'pages/Budget/components/BudgetCategoryList';
 import BudgetTransactionList from 'pages/Budget/components/BudgetTransactionList';
 
 import AddTransactionForm from './components/AddTransactionForm/AddTransactionForm';
+import SingleTransactionData from './components/SingleTransactionData/SingleTransactionData';
 
 const Budget = ({
   budgetState, commonState, allCategories, budget, addTransaction,
@@ -27,7 +28,7 @@ const Budget = ({
     fetchAllCategories();
 
     return () => {
-      console.log('Odmontowano komponent Budget');
+      // console.log('Odmontowano komponent Budget');
     }
   }, [fetchBudget, fetchBudgetedCategories, fetchAllCategories]);
 
@@ -66,6 +67,12 @@ const Budget = ({
         <Route exact path="/budget/transactions/new">
           <Modal>
             <AddTransactionForm onSubmit={handleSubmitAddTransaction} categories={allCategories} groupCategoriesBy={'parentCategory.name'} />
+          </Modal>
+        </Route>
+
+        <Route exact path="/budget/transaction/:id">
+          <Modal>
+            {isLoaded ? <SingleTransactionData transactions={budget.transactions} budgetName={budget.name} allCategories={allCategories} /> : <LoadingIndicator />}
           </Modal>
         </Route>
       </Switch>

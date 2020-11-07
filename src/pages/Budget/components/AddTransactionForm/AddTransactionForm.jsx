@@ -1,17 +1,38 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Form, Field } from 'react-final-form'
 import { useTranslation } from 'react-i18next';
+import { groupBy, noop } from 'lodash';
 
 
 
-const AddTransactionForm = ({ }) => {
+const AddTransactionForm = ({ onSubmit = noop, categories, groupCategoriesBy }) => {
   const { t } = useTranslation();
 
   const required = value => (value ? undefined : t('Field is required!'));
 
+  const groupedCategoriesByParentName = groupCategoriesBy
+    ? groupBy(categories, groupCategoriesBy)
+    : null;
+
+  const categoryItems = useMemo(
+    () => groupedCategoriesByParentName
+      ? Object.entries(groupedCategoriesByParentName)
+        .map(([parentName, categories]) => (
+          <optgroup key={parentName} label={t(parentName)}>
+            {categories.map(category => (
+              <option key={category.id} value={category.id}>{t(category.name)}</option>
+            ))}
+          </optgroup>
+        ))
+      : categories.map(category => (
+        <option value={category.id}>{t(category.name)}</option>
+      )),
+    [categories, groupedCategoriesByParentName, t]
+  );
+
   return (
     <Form
-      onSubmit={console.log}
+      onSubmit={onSubmit}
       render={({ handleSubmit, form, submitting, pristine, values }) => (
         <form onSubmit={handleSubmit}>
           <Field name="description" validate={required}>
@@ -32,12 +53,16 @@ const AddTransactionForm = ({ }) => {
               </div>
             )}
           </Field>
-          <Field name="category" validate={required}>
+          <Field name="categoryId" validate={required}>
             {({ input, meta }) => (
               <div>
                 <label>{t('Category')}</label>
-                <input {...input} type="text" placeholder={t('Category')} />
-                {meta.error && meta.touched && <span role="alert">{meta.error}</span>}
+                <select {...input}>
+                  {categoryItems}
+                </select>
+
+                {/* <input {...input} type="text" placeholder={t('Category')} />
+                {meta.error && meta.touched && <span role="alert">{meta.error}</span>} */}
               </div>
             )}
           </Field>

@@ -3,15 +3,22 @@ import { connect } from 'react-redux';
 import { groupBy } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import 'styled-components/macro'; // pobieramy cały katalog. To jest potrzebne do dodawanie inlinowo stylów css do styled components
+import { useQuery } from 'react-query'
 
 import { ToggleableList } from 'components';
 import ParentCategory from './ParentCategory';
 import CategoryItem from './CategoryItem';
-import { ErrorParagraph } from 'components'; // TODO: apply ErrorParagraph if budget is not fetched
+// import { ErrorParagraph } from 'components'; // TODO: apply ErrorParagraph if budget is not fetched
 
 import { selectParentCategory } from 'data/actions/budget.actions';
 
-const BudgetCategoryList = ({ budgetedCategories, allCategories, budget, selectParentCategory }) => {
+import API from 'data/fetch';
+
+const BudgetCategoryList = ({ selectParentCategory }) => {
+    const { data: budget } = useQuery(['budget', { id: 1 }], API.budget.fetchBudget);
+    const { data: allCategories } = useQuery(['allCategories'], API.common.fetchAllCategories);
+    const { data: budgetedCategories } = useQuery(['budgetedCategories', { id: 1 }], API.budget.fetchBudgetedCategories);
+
     const { t } = useTranslation();
     const handleClickParentCategoryRef = useRef(null);
 
@@ -134,10 +141,6 @@ const BudgetCategoryList = ({ budgetedCategories, allCategories, budget, selectP
 
 
 
-export default connect(state => ({
-    budgetedCategories: state.budget.budgetedCategories,
-    allCategories: state.common.allCategories,
-    budget: state.budget.budget,
-}), {
+export default connect(null, {
     selectParentCategory
 })(BudgetCategoryList);

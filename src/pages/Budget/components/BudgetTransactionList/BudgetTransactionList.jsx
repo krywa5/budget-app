@@ -2,23 +2,32 @@ import React, { useMemo } from 'react';
 import { connect } from 'react-redux';
 import { groupBy } from 'lodash';
 import { useTranslation } from 'react-i18next';
+import { useQuery } from 'react-query'
 
 import { formatCurrency, formatDate } from 'utils';
 
 import { List, ListItem } from './BudgetTransactionList.css';
 import { Link } from 'react-router-dom';
 
-const BudgetTransactionList = ({ transactions, budgetedCategories, allCategories, selectedParentCategoryId }) => {
+import API from 'data/fetch';
+
+
+const BudgetTransactionList = ({ selectedParentCategoryId }) => {
+    const { data: budget } = useQuery(['budget', { id: 1 }], API.budget.fetchBudget);
+    const { data: allCategories } = useQuery(['allCategories'], API.common.fetchAllCategories);
+    const { data: budgetedCategories } = useQuery(['budgetedCategories', { id: 1 }], API.budget.fetchBudgetedCategories);
+
+
     const { i18n } = useTranslation()
     const activeLanguage = i18n.language;
 
     const filteredTransactionsBySelectedParentCategory = useMemo(() => {
         if (typeof selectedParentCategoryId === 'undefined') {
-            return transactions;
+            return budget.transactions;
         }
 
         if (selectedParentCategoryId === null) {
-            return transactions.filter(transaction => {
+            return budget.transactions.filter(transaction => {
                 const hasBudgetedCategory = budgetedCategories
                     .some(budgetedCategory => budgetedCategory.categoryId === transaction.categoryId);
 
@@ -26,7 +35,7 @@ const BudgetTransactionList = ({ transactions, budgetedCategories, allCategories
             })
         }
 
-        return transactions
+        return budget.transactions
             .filter(transaction => {
                 try {
                     const category = allCategories
@@ -40,7 +49,7 @@ const BudgetTransactionList = ({ transactions, budgetedCategories, allCategories
                 }
             })
     },
-        [allCategories, budgetedCategories, selectedParentCategoryId, transactions]
+        [allCategories, budgetedCategories, selectedParentCategoryId, budget.transactions]
     );
 
     const groupedTransactions = useMemo(() => groupBy(
@@ -78,8 +87,5 @@ const BudgetTransactionList = ({ transactions, budgetedCategories, allCategories
 
 
 export default connect(state => ({
-    transactions: state.budget.budget.transactions,
-    budgetedCategories: state.budget.budgetedCategories,
-    allCategories: state.common.allCategories,
     selectedParentCategoryId: state.budget.selectedParentCategoryId,
 }))(BudgetTransactionList);

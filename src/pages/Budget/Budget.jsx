@@ -1,13 +1,12 @@
-import React, { useEffect, useMemo } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Route, Switch, useHistory } from 'react-router-dom';
 
-import { fetchBudget, fetchBudgetedCategories, addTransaction } from 'data/actions/budget.actions';
-import { fetchAllCategories } from 'data/actions/common.actions';
+import { addTransaction } from 'data/actions/budget.actions';
 
 import { Grid } from './Budget.css';
-import { LoadingIndicator, Modal, Button } from 'components';
+import { Modal, Button, LoadingIndicator } from 'components';
 
 import BudgetCategoryList from 'pages/Budget/components/BudgetCategoryList';
 import BudgetTransactionList from 'pages/Budget/components/BudgetTransactionList';
@@ -15,29 +14,11 @@ import BudgetTransactionList from 'pages/Budget/components/BudgetTransactionList
 import AddTransactionForm from './components/AddTransactionForm/AddTransactionForm';
 import SingleTransactionData from './components/SingleTransactionData/SingleTransactionData';
 
-const Budget = ({
-  budgetState, commonState, allCategories, budget, addTransaction,
-  fetchBudget, fetchBudgetedCategories, fetchAllCategories
-}) => {
+const Budget = ({ allCategories, budget, addTransaction }) => {
 
   const history = useHistory();
 
-  useEffect(() => {
-    fetchBudget(1);
-    fetchBudgetedCategories(1);
-    fetchAllCategories();
-
-    return () => {
-      // console.log('Odmontowano komponent Budget');
-    }
-  }, [fetchBudget, fetchBudgetedCategories, fetchAllCategories]);
-
   const { t } = useTranslation();
-
-  const isLoaded = useMemo(
-    () => !!commonState && !!budgetState && Object.keys(commonState).length === 0 && Object.keys(budgetState).length === 0,
-    [commonState, budgetState]
-  );
 
   const handleSubmitAddTransaction = values => {
     addTransaction({
@@ -48,19 +29,20 @@ const Budget = ({
       .then(() => history.goBack());
   };
 
+
   return (
     <>
       <Grid>
         <section>
-          {isLoaded ?
-            <>
-              <Button to='/budget/transactions/new'>{t('Add new transaction')}</Button>
-              <BudgetCategoryList />
-            </>
-            : <LoadingIndicator />}
+          <React.Suspense fallback={<LoadingIndicator />}>
+            <BudgetCategoryList />
+          </React.Suspense>
         </section>
         <section>
-          {isLoaded ? <BudgetTransactionList /> : <LoadingIndicator />}
+          <React.Suspense fallback={<LoadingIndicator />}>
+            <Button to='/budget/transactions/new'>{t('Add new transaction')}</Button>
+            <BudgetTransactionList />
+          </React.Suspense>
         </section>
       </Grid>
 
@@ -73,7 +55,7 @@ const Budget = ({
 
         <Route exact path="/budget/transaction/:id">
           <Modal>
-            {isLoaded ? <SingleTransactionData transactions={budget.transactions} budgetName={budget.name} allCategories={allCategories} /> : <LoadingIndicator />}
+            <SingleTransactionData />
           </Modal>
         </Route>
       </Switch>
@@ -90,9 +72,6 @@ export default connect(state => {
     allCategories: state.common.allCategories,
   }
 }, {
-  fetchBudget,
-  fetchBudgetedCategories,
-  fetchAllCategories,
   addTransaction,
 })(Budget);
 

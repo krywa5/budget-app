@@ -8,7 +8,6 @@ import { useQuery } from 'react-query'
 import { ToggleableList } from 'components';
 import ParentCategory from './ParentCategory';
 import CategoryItem from './CategoryItem';
-// import { ErrorParagraph } from 'components'; // TODO: apply ErrorParagraph if budget is not fetched
 
 import { selectParentCategory } from 'data/actions/budget.actions';
 

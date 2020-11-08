@@ -14,6 +14,10 @@ const GlobalStyle = createGlobalStyle`
       margin-left :${({ theme }) => theme.spacing.xs}px;
     }
   }
+
+  [role="alert"] {
+    color: ${({ theme }) => theme.colors.red.normal};
+  }
 `;
 
 export default GlobalStyle;

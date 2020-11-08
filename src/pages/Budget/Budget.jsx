@@ -6,7 +6,7 @@ import { Route, Switch, useHistory } from 'react-router-dom';
 import { addTransaction } from 'data/actions/budget.actions';
 
 import { Grid } from './Budget.css';
-import { Modal, Button, LoadingIndicator } from 'components';
+import { Modal, Button, SuspenseErrorBoundary } from 'components';
 
 import BudgetCategoryList from 'pages/Budget/components/BudgetCategoryList';
 import BudgetTransactionList from 'pages/Budget/components/BudgetTransactionList';
@@ -34,15 +34,15 @@ const Budget = ({ allCategories, budget, addTransaction }) => {
     <>
       <Grid>
         <section>
-          <React.Suspense fallback={<LoadingIndicator />}>
+          <SuspenseErrorBoundary>
             <BudgetCategoryList />
-          </React.Suspense>
+          </SuspenseErrorBoundary>
         </section>
         <section>
-          <React.Suspense fallback={<LoadingIndicator />}>
+          <SuspenseErrorBoundary>
             <Button to='/budget/transactions/new'>{t('Add new transaction')}</Button>
             <BudgetTransactionList />
-          </React.Suspense>
+          </SuspenseErrorBoundary>
         </section>
       </Grid>
 

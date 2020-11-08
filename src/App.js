@@ -5,13 +5,14 @@ import { Button, LoadingIndicator, Navigation, Wrapper } from 'components';
 import { Home, Budget } from 'pages';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { QueryCache, ReactQueryCacheProvider } from 'react-query';
+import { ReactQueryCacheProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query-devtools';
 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import theme from 'utils/theme';
+import queryCache from 'data/query/queryCache';
 
 toast.configure();
 
@@ -59,14 +60,6 @@ function App({ budget, fetchBudget, fetchBudgetedCategories }) {
 }
 
 
-const queryCache = new QueryCache({
-  defaultConfig: {
-    queries: {
-      suspense: true,
-    },
-  },
-})
-
 const RootApp = () => {
   return (
     <ReactQueryCacheProvider queryCache={queryCache}>
@@ -77,7 +70,6 @@ const RootApp = () => {
       </ThemeProvider>
       {process.env.NODE_ENV === 'development' && <ReactQueryDevtools initialIsOpen={false} />}
     </ReactQueryCacheProvider>
-
   )
 }
 

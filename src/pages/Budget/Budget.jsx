@@ -1,9 +1,6 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { Route, Switch, useHistory } from 'react-router-dom';
-
-import { addTransaction } from 'data/actions/budget.actions';
+import { Route, Switch } from 'react-router-dom';
 
 import { Grid } from './Budget.css';
 import { Modal, Button, SuspenseErrorBoundary } from 'components';
@@ -11,24 +8,12 @@ import { Modal, Button, SuspenseErrorBoundary } from 'components';
 import BudgetCategoryList from 'pages/Budget/components/BudgetCategoryList';
 import BudgetTransactionList from 'pages/Budget/components/BudgetTransactionList';
 
-import AddTransactionForm from './components/AddTransactionForm/AddTransactionForm';
 import SingleTransactionData from './components/SingleTransactionData/SingleTransactionData';
+import AddTransactionView from './components/AddTransactionForm/AddTransactionView';
 
-const Budget = ({ allCategories, budget, addTransaction }) => {
-
-  const history = useHistory();
+const Budget = () => {
 
   const { t } = useTranslation();
-
-  const handleSubmitAddTransaction = values => {
-    addTransaction({
-      budgetId: budget.id,
-      data: values,
-      translation: t,
-    })
-      .then(() => history.goBack());
-  };
-
 
   return (
     <>
@@ -49,7 +34,7 @@ const Budget = ({ allCategories, budget, addTransaction }) => {
       <Switch>
         <Route exact path="/budget/transactions/new">
           <Modal>
-            <AddTransactionForm onSubmit={handleSubmitAddTransaction} categories={allCategories} groupCategoriesBy={'parentCategory.name'} />
+            <AddTransactionView />
           </Modal>
         </Route>
 
@@ -64,16 +49,4 @@ const Budget = ({ allCategories, budget, addTransaction }) => {
 }
 
 
-export default connect(state => {
-  return {
-    budget: state.budget.budget,
-    commonState: state.common.loadingState,
-    budgetState: state.budget.loadingState,
-    allCategories: state.common.allCategories,
-  }
-}, {
-  addTransaction,
-})(Budget);
-
-
-
+export default Budget;

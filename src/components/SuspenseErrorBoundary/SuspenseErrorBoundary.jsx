@@ -7,6 +7,7 @@ class ErrorBoundary extends Component {
     constructor(props) {
         super(props);
         this.state = { hasError: false };
+        this.errorMessage = 'Something went wrong.';
     }
 
     static getDerivedStateFromError(error) {
@@ -21,10 +22,10 @@ class ErrorBoundary extends Component {
     }
 
     tryAgain = () => {
-        queryCache.invalidateQueries([], {
+        this.setState({ hasError: false });
+        queryCache.invalidateQueries(['budget'], {
             refetchInactive: true,
         })
-            .then(() => this.setState({ hasError: false }));
     }
 
     render() {
@@ -32,7 +33,7 @@ class ErrorBoundary extends Component {
             <React.Suspense fallback={<LoadingIndicator />}>
                 {this.state.hasError ? (
                     <>
-                        <p role="alert">Something went wrong.</p>
+                        <p role="alert">{this.props.t(this.errorMessage)}</p>
                         <Button onClick={this.tryAgain}>{this.props.t('Try again')}</Button>
                     </>
                 ) : (

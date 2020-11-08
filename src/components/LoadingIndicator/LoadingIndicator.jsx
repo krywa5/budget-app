@@ -20,7 +20,7 @@ const Root = styled.div`
     transform: translate(-50%,-50%);
     width: 80px;
     height: 80px;
-    margin-top: ${({ theme }) => theme.spacing.xl}px;
+    margin: ${({ theme }) => theme.spacing.xl}px;
 `;
 
 const Content1 = styled.div`

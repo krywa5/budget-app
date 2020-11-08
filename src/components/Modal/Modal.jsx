@@ -7,7 +7,7 @@ const Modal = ({ children }) => {
     const history = useHistory();
 
     const closeModalHandler = () => {
-        history.goBack();
+        history.push("/budget");
     }
 
     return createPortal(

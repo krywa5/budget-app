@@ -9,7 +9,7 @@ import { List, ListItem } from './BudgetTransactionList.css';
 import { Link } from 'react-router-dom';
 
 import API from 'data/fetch';
-import { BudgetContext } from 'data/context/budget.context';
+import { budgetContext } from 'data/context/budget.context';
 
 
 const BudgetTransactionList = () => {
@@ -17,18 +17,17 @@ const BudgetTransactionList = () => {
     const { data: allCategories } = useQuery(['allCategories'], API.common.fetchAllCategories);
     const { data: budgetedCategories } = useQuery(['budgetedCategories', { id: 1 }], API.budget.fetchBudgetedCategories);
 
-    const { selectedParentId } = useContext(BudgetContext);
-
+    const { selectedParentCategoryId } = useContext(budgetContext);
 
     const { i18n } = useTranslation()
     const activeLanguage = i18n.language;
 
     const filteredTransactionsBySelectedParentCategory = useMemo(() => {
-        if (typeof selectedParentId === 'undefined') {
+        if (typeof selectedParentCategoryId === 'undefined') {
             return budget.transactions;
         }
 
-        if (selectedParentId === null) {
+        if (selectedParentCategoryId === null) {
             return budget.transactions.filter(transaction => {
                 const hasBudgetedCategory = budgetedCategories
                     .some(budgetedCategory => budgetedCategory.categoryId === transaction.categoryId);
@@ -45,13 +44,13 @@ const BudgetTransactionList = () => {
 
                     const parentCategoryName = category.parentCategory.name;
 
-                    return parentCategoryName === selectedParentId;
+                    return parentCategoryName === selectedParentCategoryId;
                 } catch (error) {
                     return false;
                 }
             })
     },
-        [allCategories, budgetedCategories, selectedParentId, budget.transactions]
+        [allCategories, budgetedCategories, selectedParentCategoryId, budget.transactions]
     );
 
     const groupedTransactions = useMemo(() => groupBy(

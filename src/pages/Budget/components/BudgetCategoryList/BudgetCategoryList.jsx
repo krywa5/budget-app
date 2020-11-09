@@ -8,16 +8,24 @@ import { ToggleableList } from 'components';
 import ParentCategory from './ParentCategory';
 import CategoryItem from './CategoryItem';
 
-import { BudgetContext } from 'data/context/budget.context';
+import { budgetContext } from 'data/context/budget.context';
 
 import API from 'data/fetch';
+import { SELECT_PARENT_CATEGORY_ID } from 'data/constants';
 
 const BudgetCategoryList = () => {
     const { data: budget } = useQuery(['budget', { id: 1 }], API.budget.fetchBudget);
     const { data: allCategories } = useQuery(['allCategories'], API.common.fetchAllCategories);
     const { data: budgetedCategories } = useQuery(['budgetedCategories', { id: 1 }], API.budget.fetchBudgetedCategories);
 
-    const { setSelectedParentId } = useContext(BudgetContext);
+    const { dispatch } = useContext(budgetContext);
+
+    const setSelectedParentCategoryId = useCallback(id => dispatch({
+        type: SELECT_PARENT_CATEGORY_ID,
+        payload: id,
+    }),
+        [dispatch]
+    );
 
     const { t } = useTranslation();
     const handleClickParentCategoryRef = useRef(null);
@@ -30,16 +38,16 @@ const BudgetCategoryList = () => {
     );
 
     const handleClearParentCategorySelect = useCallback(() => {
-        setSelectedParentId();
+        setSelectedParentCategoryId();
         handleClickParentCategoryRef.current();
     },
-        [setSelectedParentId, handleClickParentCategoryRef]
+        [setSelectedParentCategoryId, handleClickParentCategoryRef]
     );
     const handleSelectRestParentCategories = useCallback(() => {
-        setSelectedParentId(null);
+        setSelectedParentCategoryId(null);
         handleClickParentCategoryRef.current();
     },
-        [setSelectedParentId, handleClickParentCategoryRef]
+        [setSelectedParentCategoryId, handleClickParentCategoryRef]
     );
 
     const listItems = useMemo(() => Object.entries(budgetedCategoriesByParent).map(([parentName, categories]) => ({
@@ -49,7 +57,7 @@ const BudgetCategoryList = () => {
                 name={parentName}
                 onClick={() => {
                     onClick(parentName);
-                    setSelectedParentId(parentName);
+                    setSelectedParentCategoryId(parentName);
                 }}
                 categories={categories}
                 transactions={budget.transactions}
@@ -67,7 +75,7 @@ const BudgetCategoryList = () => {
         }
         ),
     })),
-        [allCategories, budget.transactions, budgetedCategoriesByParent, setSelectedParentId]
+        [allCategories, budget.transactions, budgetedCategoriesByParent, setSelectedParentCategoryId]
     );
 
     const totalSpent = useMemo(() => budget.transactions

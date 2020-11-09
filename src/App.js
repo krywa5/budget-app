@@ -16,7 +16,7 @@ import queryCache from 'data/query/queryCache';
 
 toast.configure();
 
-function App({ budget, fetchBudget, fetchBudgetedCategories }) {
+function App() {
 
   const { i18n } = useTranslation();
 

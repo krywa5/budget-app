@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-const Item = ({ item, onClickHandler, isActive }) => (
+const Item = React.memo(({ item, onClickHandler, isActive }) => (
     <div>
         <item.Trigger onClick={onClickHandler} />
         {isActive && item.children}
     </div>
-)
+));
 
 const ToggleableList = ({ items, clickRef }) => {
     const [selectedItem, setSelectedItem] = useState(false);
@@ -35,4 +35,4 @@ ToggleableList.propTypes = {
     items: PropTypes.array
 }
 
-export default ToggleableList;
+export default React.memo(ToggleableList);

@@ -1,22 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Route, Switch } from 'react-router-dom';
 
 import { Grid } from './Budget.css';
 import { Modal, Button, SuspenseErrorBoundary } from 'components';
+import BudgetProvider from 'data/context/budget.context';
 
-import BudgetCategoryList from 'pages/Budget/components/BudgetCategoryList';
-import BudgetTransactionList from 'pages/Budget/components/BudgetTransactionList';
-
-import SingleTransactionData from './components/SingleTransactionData/SingleTransactionData';
-import AddTransactionView from './components/AddTransactionForm/AddTransactionView';
+const BudgetTransactionList = React.lazy(() => import('pages/Budget/components/BudgetTransactionList'));
+const BudgetCategoryList = React.lazy(() => import('pages/Budget/components/BudgetCategoryList'));
+const AddTransactionView = React.lazy(() => import('./components/AddTransactionForm/AddTransactionView'));
+const SingleTransactionData = React.lazy(() => import('./components/SingleTransactionData/SingleTransactionData'));
 
 const Budget = () => {
+  const [showTransactions, setShowTransactions] = useState(false);
+
+
 
   const { t } = useTranslation();
 
   return (
-    <>
+    <BudgetProvider>
       <Grid>
         <section>
           <SuspenseErrorBoundary>
@@ -26,7 +29,12 @@ const Budget = () => {
         <section>
           <SuspenseErrorBoundary>
             <Button to='/budget/transactions/new'>{t('Add new transaction')}</Button>
-            <BudgetTransactionList />
+            <Button onClick={() => setShowTransactions(!showTransactions)}>
+              {showTransactions ? t('Hide transactions') : t('Show transactions')}
+            </Button>
+            {showTransactions && (
+              <BudgetTransactionList />
+            )}
           </SuspenseErrorBoundary>
         </section>
       </Grid>
@@ -44,7 +52,7 @@ const Budget = () => {
           </Modal>
         </Route>
       </Switch>
-    </>
+    </BudgetProvider>
   );
 }
 

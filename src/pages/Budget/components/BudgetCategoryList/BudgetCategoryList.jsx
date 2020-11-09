@@ -1,5 +1,4 @@
-import React, { useRef, useMemo, useCallback } from 'react';
-import { connect } from 'react-redux';
+import React, { useRef, useMemo, useCallback, useContext } from 'react';
 import { groupBy } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import 'styled-components/macro'; // pobieramy cały katalog. To jest potrzebne do dodawanie inlinowo stylów css do styled components
@@ -9,14 +8,16 @@ import { ToggleableList } from 'components';
 import ParentCategory from './ParentCategory';
 import CategoryItem from './CategoryItem';
 
-import { selectParentCategory } from 'data/actions/budget.actions';
+import { BudgetContext } from 'data/context/budget.context';
 
 import API from 'data/fetch';
 
-const BudgetCategoryList = ({ selectParentCategory }) => {
+const BudgetCategoryList = () => {
     const { data: budget } = useQuery(['budget', { id: 1 }], API.budget.fetchBudget);
     const { data: allCategories } = useQuery(['allCategories'], API.common.fetchAllCategories);
     const { data: budgetedCategories } = useQuery(['budgetedCategories', { id: 1 }], API.budget.fetchBudgetedCategories);
+
+    const { setSelectedParentId } = useContext(BudgetContext);
 
     const { t } = useTranslation();
     const handleClickParentCategoryRef = useRef(null);
@@ -29,16 +30,16 @@ const BudgetCategoryList = ({ selectParentCategory }) => {
     );
 
     const handleClearParentCategorySelect = useCallback(() => {
-        selectParentCategory();
+        setSelectedParentId();
         handleClickParentCategoryRef.current();
     },
-        [selectParentCategory, handleClickParentCategoryRef]
+        [setSelectedParentId, handleClickParentCategoryRef]
     );
     const handleSelectRestParentCategories = useCallback(() => {
-        selectParentCategory(null);
+        setSelectedParentId(null);
         handleClickParentCategoryRef.current();
     },
-        [selectParentCategory, handleClickParentCategoryRef]
+        [setSelectedParentId, handleClickParentCategoryRef]
     );
 
     const listItems = useMemo(() => Object.entries(budgetedCategoriesByParent).map(([parentName, categories]) => ({
@@ -48,7 +49,7 @@ const BudgetCategoryList = ({ selectParentCategory }) => {
                 name={parentName}
                 onClick={() => {
                     onClick(parentName);
-                    selectParentCategory(parentName);
+                    setSelectedParentId(parentName);
                 }}
                 categories={categories}
                 transactions={budget.transactions}
@@ -66,7 +67,7 @@ const BudgetCategoryList = ({ selectParentCategory }) => {
         }
         ),
     })),
-        [allCategories, budget.transactions, budgetedCategoriesByParent, selectParentCategory]
+        [allCategories, budget.transactions, budgetedCategoriesByParent, setSelectedParentId]
     );
 
     const totalSpent = useMemo(() => budget.transactions
@@ -139,7 +140,4 @@ const BudgetCategoryList = ({ selectParentCategory }) => {
 }
 
 
-
-export default connect(null, {
-    selectParentCategory
-})(BudgetCategoryList);
+export default BudgetCategoryList;

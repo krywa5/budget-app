@@ -4,6 +4,7 @@ const queryCache = new QueryCache({
     defaultConfig: {
         queries: {
             suspense: true,
+            refetchOnWindowFocus: false,
         },
     },
 })

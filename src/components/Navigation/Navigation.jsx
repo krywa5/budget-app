@@ -5,8 +5,6 @@ import { Button } from 'components';
 import { Container, List, NavigationWrapper } from './Navigation.css';
 import { useTranslation } from 'react-i18next';
 
-
-
 const Navigation = ({ items = [], RightElement }) => {
     const { t } = useTranslation();
 

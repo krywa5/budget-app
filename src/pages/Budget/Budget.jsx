@@ -14,8 +14,6 @@ const SingleTransactionData = React.lazy(() => import('./components/SingleTransa
 const Budget = () => {
   const [showTransactions, setShowTransactions] = useState(false);
 
-
-
   const { t } = useTranslation();
 
   return (

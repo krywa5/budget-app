@@ -2,6 +2,7 @@ import React, { createContext, useReducer } from 'react';
 import { SELECT_PARENT_CATEGORY_ID } from 'data/constants';
 
 const initialValue = {};
+
 export const budgetContext = createContext(initialValue);
 const { Provider } = budgetContext;
 
@@ -35,4 +36,3 @@ const BudgetProvider = ({ children }) => {
 }
 
 export default BudgetProvider;
-

@@ -15,8 +15,10 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 
-  [role="alert"] {
-    color: ${({ theme }) => theme.colors.red.normal};
+  span,p {
+    &[role="alert"] {
+      color: ${({ theme }) => theme.colors.red.normal};
+    }
   }
 `;
 

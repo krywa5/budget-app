@@ -2,6 +2,7 @@ import React from 'react';
 import { useMutation, useQuery } from 'react-query';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import AddTransactionForm from './AddTransactionForm';
 
@@ -15,7 +16,15 @@ const AddTransactionView = () => {
     const [mutate] = useMutation(API.budget.addTransaction, {
         onSuccess: () => {
             queryCache.invalidateQueries(['budget', { id: 1 }]);
+            toast.success(t('Transaction has been added!'), {
+                position: toast.POSITION.TOP_RIGHT,
+            });
         },
+        onError: () => {
+            toast.error(t('Something went wrong.'), {
+                position: toast.POSITION.TOP_RIGHT,
+            });
+        }
     });
 
     const history = useHistory();

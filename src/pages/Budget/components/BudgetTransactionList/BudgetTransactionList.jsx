@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 
 import API from 'data/fetch';
 import { budgetContext } from 'data/context/budget.context';
+import { Button } from 'components';
 
 
 const BudgetTransactionList = () => {
@@ -19,7 +20,7 @@ const BudgetTransactionList = () => {
 
     const { selectedParentCategoryId } = useContext(budgetContext);
 
-    const { i18n } = useTranslation()
+    const { i18n, t } = useTranslation()
     const activeLanguage = i18n.language;
 
     const filteredTransactionsBySelectedParentCategory = useMemo(() => {
@@ -60,6 +61,10 @@ const BudgetTransactionList = () => {
         [filteredTransactionsBySelectedParentCategory]
     );
 
+    const editTransation = (e) => {
+        e.preventDefault();
+        console.log('click')
+    }
 
     return (
         <List>
@@ -68,11 +73,13 @@ const BudgetTransactionList = () => {
                     <ul>
                         {transactions.map(transaction => (
                             <ListItem key={transaction.description}>
-                                <Link to={`/budget/transaction/${transaction.id}`}>
+                                <Link to={`/budget/transaction/${transaction.id}/details`}>
                                     <div>{transaction.description}</div>
                                     <div>{formatCurrency(transaction.amount, activeLanguage)}</div>
                                     <div>{formatDate(transaction.date, activeLanguage)}</div>
                                     <div>{(allCategories.find(category => category.id === transaction.categoryId) || {}).name}</div>
+                                    <div><Button onClick={editTransation}>{t('Edit')}</Button></div>
+                                    <div><Button>{t('Delete')}</Button></div>
                                 </Link>
                             </ListItem>
                         ))}

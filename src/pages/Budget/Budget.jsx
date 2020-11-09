@@ -9,6 +9,7 @@ import BudgetProvider from 'data/context/budget.context';
 const BudgetTransactionList = React.lazy(() => import('pages/Budget/components/BudgetTransactionList'));
 const BudgetCategoryList = React.lazy(() => import('pages/Budget/components/BudgetCategoryList'));
 const AddTransactionView = React.lazy(() => import('./components/AddTransactionForm/AddTransactionView'));
+const EditTransactionForm = React.lazy(() => import('./components/EditTransactionForm/EditTransactionForm'));
 const SingleTransactionData = React.lazy(() => import('./components/SingleTransactionData/SingleTransactionData'));
 
 const Budget = () => {
@@ -44,9 +45,15 @@ const Budget = () => {
           </Modal>
         </Route>
 
-        <Route exact path="/budget/transaction/:id">
+        <Route exact path="/budget/transaction/:id/details">
           <Modal>
             <SingleTransactionData />
+          </Modal>
+        </Route>
+
+        <Route exact path="/budget/transaction/:id/edit">
+          <Modal>
+            <EditTransactionForm />
           </Modal>
         </Route>
       </Switch>

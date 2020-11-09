@@ -40,5 +40,4 @@ export const ListItem = styled.li`
             flex: 1;
         }
     }
-
 `;

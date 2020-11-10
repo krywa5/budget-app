@@ -36,7 +36,8 @@ const DeleteTransactionForm = () => {
 
     return (
         <>
-            <p>Czy na pewno chcesz usunąć transakcję?</p>
+            <h2>{t('Transaction Edition')}</h2>
+            <p>{t('Do you really want to delete this transaction?')}</p>
             <div>
                 <Button onClick={deleteTransactionHandler}>{t('Yes')}</Button>
                 <Button to="/budget">{t('No')}</Button>

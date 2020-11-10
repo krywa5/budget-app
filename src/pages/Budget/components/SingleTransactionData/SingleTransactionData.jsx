@@ -27,7 +27,8 @@ const SingleTransactionData = () => {
 
     return (
         <Root>
-            <h2>{description}</h2>
+            <h2>{t('Transaction info')}</h2>
+            <h3>{description}</h3>
             <p><span>{t('Transaction amount')}</span><span>{amountFormatted}</span></p>
             <p><span>{t('Budget name')}</span><span>{budget.name}</span></p>
             <p><span>{t('Category')}</span><span>{categoryName}</span></p>

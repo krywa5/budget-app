@@ -34,7 +34,7 @@ const EditTransactionForm = ({ onSubmit = noop, transactions, categories, groupC
 
     return (
         <>
-            <h2>{t('Transaction Edition')}</h2>
+            <h2>{t('Transaction edition')}</h2>
             <Form
                 onSubmit={onSubmit}
                 render={({ handleSubmit, form, submitting, pristine, values }) => (

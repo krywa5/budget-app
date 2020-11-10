@@ -52,18 +52,19 @@ const AddTransactionForm = ({ onSubmit = noop, categories, groupCategoriesBy }) 
               </div>
             )}
           </Field>
-          <Field name="categoryId" validate={required}>
+          <Field name="categoryId" defaultValue="" validate={required}>
             {({ input, meta }) => (
               <div>
                 <label>{t('Category')}</label>
                 <select {...input}>
+                  <option value="" disabled>{t('Choose category')}</option>
                   {categoryItems}
                 </select>
                 {meta.error && meta.touched && <span role="alert">{meta.error}</span>}
               </div>
             )}
           </Field>
-          <Field name="date" validate={required}>
+          <Field name="date" defaultValue={new Date().toISOString().slice(0, 10)} validate={required}>
             {({ input, meta }) => (
               <div>
                 <label>{t('Date')}</label>

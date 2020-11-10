@@ -9,7 +9,7 @@ import BudgetProvider from 'data/context/budget.context';
 const BudgetTransactionList = React.lazy(() => import('pages/Budget/components/BudgetTransactionList'));
 const BudgetCategoryList = React.lazy(() => import('pages/Budget/components/BudgetCategoryList'));
 const AddTransactionView = React.lazy(() => import('./components/AddTransactionForm/AddTransactionView'));
-const EditTransactionForm = React.lazy(() => import('./components/EditTransactionForm/EditTransactionForm'));
+const EditTransactionForm = React.lazy(() => import('./components/EditTransactionForm'));
 const DeleteTransactionForm = React.lazy(() => import('./components/DeleteTransactionForm/DeleteTransactionForm'));
 const SingleTransactionData = React.lazy(() => import('./components/SingleTransactionData/SingleTransactionData'));
 

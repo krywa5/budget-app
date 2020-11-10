@@ -63,9 +63,10 @@ const BudgetTransactionList = () => {
         [filteredTransactionsBySelectedParentCategory]
     );
 
-    const editTransaction = (e) => {
+    const editTransactionButtonHandler = (e, transactionId) => {
         e.preventDefault();
-        console.log('edytuje transakcje')
+
+        history.push(`/budget/transaction/${transactionId}/edit`);
     }
 
     const deleteTransactionButtonHandler = (e, transactionId) => {
@@ -87,7 +88,7 @@ const BudgetTransactionList = () => {
                                     <div>{formatCurrency(transaction.amount, activeLanguage)}</div>
                                     <div>{formatDate(transaction.date, activeLanguage)}</div>
                                     <div>{(allCategories.find(category => category.id === transaction.categoryId) || {}).name}</div>
-                                    <div><Button onClick={editTransaction}>{t('Edit')}</Button></div>
+                                    <div><Button onClick={(e) => editTransactionButtonHandler(e, transaction.id)}>{t('Edit')}</Button></div>
                                     <div><Button onClick={e => deleteTransactionButtonHandler(e, transaction.id)}>{t('Delete')}</Button></div>
                                 </Link>
                             </ListItem>

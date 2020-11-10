@@ -39,3 +39,19 @@ export const deleteTransaction = async transactionId => {
 
     return data;
 }
+
+export const editTransaction = async ({ transactionId, data }) => {
+    const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/transactions/${transactionId}`,
+        {
+            method: "PATCH",
+            headers: {
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        }
+    );
+    const dataOutput = await response.json();
+
+    return dataOutput;
+}

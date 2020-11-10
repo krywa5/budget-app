@@ -1,1 +1,1 @@
-export { default } from './EditTransactionForm';
+export { default } from './EditTransactionView';

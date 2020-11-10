@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { groupBy, noop } from 'lodash';
 
 
-
 const AddTransactionForm = ({ onSubmit = noop, categories, groupCategoriesBy }) => {
   const { t } = useTranslation();
 

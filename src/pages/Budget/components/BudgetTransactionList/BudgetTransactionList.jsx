@@ -6,7 +6,7 @@ import { useQuery } from 'react-query'
 import { formatCurrency, formatDate } from 'utils';
 
 import { List, ListItem } from './BudgetTransactionList.css';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import API from 'data/fetch';
 import { budgetContext } from 'data/context/budget.context';
@@ -17,10 +17,12 @@ const BudgetTransactionList = () => {
     const { data: budget } = useQuery(['budget', { id: 1 }], API.budget.fetchBudget);
     const { data: allCategories } = useQuery(['allCategories'], API.common.fetchAllCategories);
     const { data: budgetedCategories } = useQuery(['budgetedCategories', { id: 1 }], API.budget.fetchBudgetedCategories);
+    const history = useHistory();
+
 
     const { selectedParentCategoryId } = useContext(budgetContext);
 
-    const { i18n, t } = useTranslation()
+    const { i18n, t } = useTranslation();
     const activeLanguage = i18n.language;
 
     const filteredTransactionsBySelectedParentCategory = useMemo(() => {
@@ -61,10 +63,17 @@ const BudgetTransactionList = () => {
         [filteredTransactionsBySelectedParentCategory]
     );
 
-    const editTransation = (e) => {
+    const editTransaction = (e) => {
         e.preventDefault();
-        console.log('click')
+        console.log('edytuje transakcje')
     }
+
+    const deleteTransactionButtonHandler = (e, transactionId) => {
+        e.preventDefault();
+
+        history.push(`/budget/transaction/${transactionId}/delete`);
+    }
+
 
     return (
         <List>
@@ -78,8 +87,8 @@ const BudgetTransactionList = () => {
                                     <div>{formatCurrency(transaction.amount, activeLanguage)}</div>
                                     <div>{formatDate(transaction.date, activeLanguage)}</div>
                                     <div>{(allCategories.find(category => category.id === transaction.categoryId) || {}).name}</div>
-                                    <div><Button onClick={editTransation}>{t('Edit')}</Button></div>
-                                    <div><Button>{t('Delete')}</Button></div>
+                                    <div><Button onClick={editTransaction}>{t('Edit')}</Button></div>
+                                    <div><Button onClick={e => deleteTransactionButtonHandler(e, transaction.id)}>{t('Delete')}</Button></div>
                                 </Link>
                             </ListItem>
                         ))}

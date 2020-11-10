@@ -10,10 +10,11 @@ const BudgetTransactionList = React.lazy(() => import('pages/Budget/components/B
 const BudgetCategoryList = React.lazy(() => import('pages/Budget/components/BudgetCategoryList'));
 const AddTransactionView = React.lazy(() => import('./components/AddTransactionForm/AddTransactionView'));
 const EditTransactionForm = React.lazy(() => import('./components/EditTransactionForm/EditTransactionForm'));
+const DeleteTransactionForm = React.lazy(() => import('./components/DeleteTransactionForm/DeleteTransactionForm'));
 const SingleTransactionData = React.lazy(() => import('./components/SingleTransactionData/SingleTransactionData'));
 
 const Budget = () => {
-  const [showTransactions, setShowTransactions] = useState(false);
+  const [showTransactions, setShowTransactions] = useState(true);
 
   const { t } = useTranslation();
 
@@ -54,6 +55,12 @@ const Budget = () => {
         <Route exact path="/budget/transaction/:id/edit">
           <Modal>
             <EditTransactionForm />
+          </Modal>
+        </Route>
+
+        <Route exact path="/budget/transaction/:id/delete">
+          <Modal>
+            <DeleteTransactionForm />
           </Modal>
         </Route>
       </Switch>

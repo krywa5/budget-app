@@ -22,7 +22,7 @@ const EditTransactionForm = ({ onSubmit = noop, transactions, categories, groupC
                 .map(([parentName, categories]) => (
                     <optgroup key={parentName} label={t(parentName)}>
                         {categories.map(category => (
-                            <option key={category.id} selected={category.id === categoryId ? "selected" : false} value={category.id}>{t(category.name)}</option>
+                            <option key={category.id} value={category.id}>{t(category.name)}</option>
                         ))}
                     </optgroup>
                 ))

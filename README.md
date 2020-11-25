@@ -8,6 +8,24 @@ There are 4 steps to recreate the app in your enviroment.
 * Run JSON Server with command 'npm run start:db'
 * Run localhost with command 'npm start'
 
+# Features
+* Add, edit and delete transaction
+* Show/Hide transactions list
+* Transaction categories
+* Multilanguage
+
+# Technologies used
+* Create React App
+* React Context
+* React Query
+* React Router
+* React Hooks
+* React Suspense
+* Styled Components
+* JSON Server
+* Multilangague handled by POEditor
+* Fetch
+* React Toastify
 
 # Getting Started with Create React App
 

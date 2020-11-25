@@ -38,18 +38,18 @@ i18n
                     term: key,
                 }];
                 const payload = {
-                    api_token: process.env.REACT_APP_TOKEN,
+                    api_token: process.env.REACT_APP_POEDITOR_TOKEN,
                     data: JSON.stringify(data),
-                    id: process.env.REACT_APP_ID,
+                    id: process.env.REACT_APP_POEDITOR_APP_ID,
                 };
 
                 return payload;
             },
             parseLoadPayload: ({ lng }) => {
                 const payload = {
-                    api_token: process.env.REACT_APP_TOKEN,
+                    api_token: process.env.REACT_APP_POEDITOR_TOKEN,
                     language: lng,
-                    id: process.env.REACT_APP_ID,
+                    id: process.env.REACT_APP_POEDITOR_APP_ID,
                 };
 
                 return payload;

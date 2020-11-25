@@ -11,6 +11,7 @@ export const Grid = styled.div`
         }
         &:nth-child(2) {
             flex: 8;
+            margin-left: 20px;
         }
     }
 `;

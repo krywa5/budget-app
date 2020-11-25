@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
 export const List = styled.ul`
+    margin-top: 20px;
+
     > li+li {
         margin-top: ${({ theme }) => theme.spacing.xs}px;
     }
@@ -8,6 +10,7 @@ export const List = styled.ul`
     li {
         margin: 0;
     }
+
 `;
 
 export const ListItem = styled.li`

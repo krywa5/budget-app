@@ -2,7 +2,7 @@
 This is a project of budget-management, using local json server.
 
 # Try it
-There are 4 steps to recreate the app in your enviroment. 
+There are 4 steps to recreate the app in your environment.
 * Clone this repo
 * Install npm dependencies by 'npm install'
 * Run JSON Server with command 'npm run start:db'
